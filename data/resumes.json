@@ -170,5 +170,95 @@
     "qualification": "MBA",
     "file": "resumes/1769580993_hr_resume.pdf",
     "uploaded_at": "2026-01-28T11:46:33.504696"
+  },
+  {
+    "name": "ARJUN KUMAR",
+    "email": "arjun.kumar@email.com",
+    "role": "Frontend Developer",
+    "skills": [
+      "javascript",
+      "ui",
+      "java",
+      "react",
+      "html",
+      "bootstrap",
+      "css"
+    ],
+    "experience": "1 years",
+    "qualification": "B.SC",
+    "file": "resumes/1769588694_frontend_1_year_experience.pdf",
+    "uploaded_at": "2026-01-28T13:54:54.373946"
+  },
+  {
+    "name": "NEHA SINGH",
+    "email": "neha.singh@email.com",
+    "role": "Frontend Developer",
+    "skills": [
+      "redux",
+      "javascript",
+      "ui",
+      "ux",
+      "java",
+      "react",
+      "html",
+      "css"
+    ],
+    "experience": "2 years",
+    "qualification": "B.TECH",
+    "file": "resumes/1769588694_frontend_2_years_experience.pdf",
+    "uploaded_at": "2026-01-28T13:54:54.391162"
+  },
+  {
+    "name": "ROHIT SHARMA",
+    "email": "rohit.sharma@email.com",
+    "role": "Frontend Developer",
+    "skills": [
+      "typescript",
+      "javascript",
+      "ui",
+      "ux",
+      "java",
+      "react",
+      "css"
+    ],
+    "experience": "3 years",
+    "qualification": "B.E",
+    "file": "resumes/1769588694_frontend_3_years_experience.pdf",
+    "uploaded_at": "2026-01-28T13:54:54.406661"
+  },
+  {
+    "name": "ANITA VERMA",
+    "email": "anita.verma@email.com",
+    "role": "Frontend Developer",
+    "skills": [
+      "redux",
+      "typescript",
+      "ui",
+      "ux",
+      "react",
+      "css"
+    ],
+    "experience": "5 years",
+    "qualification": "B.TECH",
+    "file": "resumes/1769588694_frontend_5_years_experience.pdf",
+    "uploaded_at": "2026-01-28T13:54:54.423236"
+  },
+  {
+    "name": "VIKRAM PATEL",
+    "email": "vikram.patel@email.com",
+    "role": "Frontend Developer",
+    "skills": [
+      "typescript",
+      "aws",
+      "angular",
+      "javascript",
+      "java",
+      "vue",
+      "react"
+    ],
+    "experience": "8 years",
+    "qualification": "B.E",
+    "file": "resumes/1769588694_frontend_8_years_experience.pdf",
+    "uploaded_at": "2026-01-28T13:54:54.440590"
   }
 ]
