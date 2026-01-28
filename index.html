@@ -1,24 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Resume Database</title>
+<meta charset="UTF-8">
+<title>Resume Database</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+h2 {
+  margin-bottom: 10px;
+}
+input, select {
+  padding: 6px;
+  margin: 5px 0;
+  width: 300px;
+}
+.card {
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 6px;
+}
+.role {
+  font-weight: bold;
+  color: #0b5ed7;
+}
+.skills span {
+  background: #eef;
+  padding: 3px 6px;
+  margin: 2px;
+  display: inline-block;
+  border-radius: 4px;
+  font-size: 12px;
+}
+</style>
 </head>
+
 <body>
-<h2>Resumes</h2>
-<ul id="list"></ul>
+
+<h2>📄 Resume Database</h2>
+
+<!-- Search -->
+<input type="text" id="searchBox" placeholder="Search by name, email, skill">
+
+<br>
+
+<!-- Role Filter -->
+<select id="roleFilter">
+  <option value="">All Roles</option>
+</select>
+
+<div id="results"></div>
 
 <script>
+let resumes = [];
+
 fetch('data/resumes.json')
-  .then(r => r.json())
+  .then(res => res.json())
   .then(data => {
-    const ul = document.getElementById('list');
-    data.forEach(r => {
-      const li = document.createElement('li');
-      li.innerHTML = `<b>${r.name}</b> – ${r.email}
-        [<a href="${r.file}" target="_blank">View</a>]`;
-      ul.appendChild(li);
-    });
+    resumes = data;
+    populateRoles(data);
+    render(data);
   });
+
+function populateRoles(data) {
+  const roles = [...new Set(data.map(r => r.role))];
+  const select = document.getElementById('roleFilter');
+
+  roles.forEach(role => {
+    const option = document.createElement('option');
+    option.value = role;
+    option.textContent = role;
+    select.appendChild(option);
+  });
+}
+
+function render(data) {
+  const container = document.getElementById('results');
+  container.innerHTML = "";
+
+  if (data.length === 0) {
+    container.innerHTML = "<p>No resumes found.</p>";
+    return;
+  }
+
+  data.forEach(r => {
+    const div = document.createElement('div');
+    div.className = "card";
+
+    div.innerHTML = `
+      <div class="role">${r.role}</div>
+      <b>${r.name}</b><br>
+      📧 ${r.email}<br>
+      🎓 ${r.qualification}<br>
+      ⏳ Experience: ${r.experience}<br>
+
+      <div class="skills">
+        ${r.skills.map(s => `<span>${s}</span>`).join("")}
+      </div>
+
+      <br>
+      <a href="${r.file}" target="_blank">📎 View Resume</a>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+document.getElementById('searchBox').addEventListener('input', filter);
+document.getElementById('roleFilter').addEventListener('change', filter);
+
+function filter() {
+  const search = document.getElementById('searchBox').value.toLowerCase();
+  const role = document.getElementById('roleFilter').value;
+
+  const filtered = resumes.filter(r => {
+    const matchesSearch =
+      r.name.toLowerCase().includes(search) ||
+      r.email.toLowerCase().includes(search) ||
+      r.skills.join(" ").toLowerCase().includes(search);
+
+    const matchesRole = role === "" || r.role === role;
+
+    return matchesSearch && matchesRole;
+  });
+
+  render(filtered);
+}
 </script>
+
 </body>
 </html>
