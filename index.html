@@ -5,61 +5,141 @@
 <title>Resume Database</title>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f4f6f9;
+  margin: 0;
+  padding: 20px;
 }
-h2 {
-  margin-bottom: 10px;
-}
-.filters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 10px;
+
+h1 {
   margin-bottom: 15px;
 }
-input, select {
-  padding: 6px;
+
+/* -------- FILTER PANEL -------- */
+.filters {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.filters label {
+  font-size: 12px;
+  color: #555;
+}
+
+.filters input,
+.filters select {
   width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
+
+/* -------- RESUME CARDS -------- */
 .card {
-  border: 1px solid #ddd;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 6px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
-.role {
-  font-weight: bold;
-  color: #0b5ed7;
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.skills span {
-  background: #eef;
-  padding: 3px 6px;
-  margin: 2px;
-  display: inline-block;
+
+.role-badge {
+  background: #0d6efd;
+  color: #fff;
+  padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.meta {
+  font-size: 14px;
+  margin: 6px 0;
+  color: #333;
+}
+
+.skills {
+  margin: 8px 0;
+}
+
+.skill {
+  display: inline-block;
+  background: #eef3ff;
+  color: #0d6efd;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin: 2px;
+}
+
+.view-link {
+  margin-top: 10px;
+  display: inline-block;
+  text-decoration: none;
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+.no-results {
+  text-align: center;
+  padding: 30px;
+  color: #777;
 }
 </style>
 </head>
 
 <body>
 
-<h2>📄 Resume Database</h2>
+<h1>📄 Resume Database</h1>
 
-<!-- Filters -->
+<!-- FILTER PANEL -->
 <div class="filters">
-  <select id="roleFilter">
-    <option value="">All Roles</option>
-  </select>
+  <div>
+    <label>Role</label>
+    <select id="roleFilter">
+      <option value="">All Roles</option>
+    </select>
+  </div>
 
-  <input type="text" id="skillFilter" placeholder="Skill (e.g. React, SEO)">
+  <div>
+    <label>Skill</label>
+    <input type="text" id="skillFilter" placeholder="React, SEO, Java">
+  </div>
 
-  <input type="text" id="experienceFilter" placeholder="Experience (e.g. 3 years)">
+  <div>
+    <label>Experience</label>
+    <input type="text" id="experienceFilter" placeholder="e.g. 3 years">
+  </div>
 
-  <input type="text" id="qualificationFilter" placeholder="Qualification (e.g. B.Tech, MBA)">
+  <div>
+    <label>Qualification</label>
+    <input type="text" id="qualificationFilter" placeholder="B.Tech, MBA">
+  </div>
 </div>
 
+<!-- RESULTS -->
 <div id="results"></div>
 
 <script>
@@ -90,7 +170,7 @@ function render(data) {
   container.innerHTML = "";
 
   if (data.length === 0) {
-    container.innerHTML = "<p>No resumes found.</p>";
+    container.innerHTML = `<div class="no-results">No resumes found</div>`;
     return;
   }
 
@@ -99,39 +179,39 @@ function render(data) {
     div.className = "card";
 
     div.innerHTML = `
-      <div class="role">${r.role}</div>
-      <b>${r.name}</b><br>
-      📧 ${r.email}<br>
-      🎓 ${r.qualification}<br>
-      ⏳ Experience: ${r.experience}<br>
-
-      <div class="skills">
-        ${r.skills.map(s => `<span>${s}</span>`).join("")}
+      <div class="card-header">
+        <div class="name">${r.name}</div>
+        <div class="role-badge">${r.role}</div>
       </div>
 
-      <br>
-      <a href="${r.file}" target="_blank">📎 View Resume</a>
+      <div class="meta">📧 ${r.email}</div>
+      <div class="meta">🎓 ${r.qualification}</div>
+      <div class="meta">⏳ Experience: ${r.experience}</div>
+
+      <div class="skills">
+        ${Array.isArray(r.skills) ? r.skills.map(s => `<span class="skill">${s}</span>`).join("") : ""}
+      </div>
+
+      <a class="view-link" href="${r.file}" target="_blank">📎 View Resume</a>
     `;
 
     container.appendChild(div);
   });
 }
 
+/* -------- AND FILTER LOGIC -------- */
 function applyFilters() {
-  const role = document.getElementById('roleFilter').value.trim().toLowerCase();
-  const skill = document.getElementById('skillFilter').value.trim().toLowerCase();
-  const experience = document.getElementById('experienceFilter').value.trim().toLowerCase();
-  const qualification = document.getElementById('qualificationFilter').value.trim().toLowerCase();
+  const role = document.getElementById('roleFilter').value.toLowerCase().trim();
+  const skill = document.getElementById('skillFilter').value.toLowerCase().trim();
+  const experience = document.getElementById('experienceFilter').value.toLowerCase().trim();
+  const qualification = document.getElementById('qualificationFilter').value.toLowerCase().trim();
 
   const filtered = resumes.filter(r => {
     const rRole = (r.role || "").toLowerCase();
-    const rSkills = Array.isArray(r.skills)
-      ? r.skills.join(" ").toLowerCase()
-      : "";
+    const rSkills = Array.isArray(r.skills) ? r.skills.join(" ").toLowerCase() : "";
     const rExp = (r.experience || "").toLowerCase();
     const rQual = (r.qualification || "").toLowerCase();
 
-    // AND logic: every filled field must match
     if (role && !rRole.includes(role)) return false;
     if (skill && !rSkills.includes(skill)) return false;
     if (experience && !rExp.includes(experience)) return false;
@@ -143,9 +223,7 @@ function applyFilters() {
   render(filtered);
 }
 
-
-
-// Attach listeners
+/* -------- EVENTS -------- */
 document.getElementById('roleFilter').addEventListener('change', applyFilters);
 document.getElementById('skillFilter').addEventListener('input', applyFilters);
 document.getElementById('experienceFilter').addEventListener('input', applyFilters);
