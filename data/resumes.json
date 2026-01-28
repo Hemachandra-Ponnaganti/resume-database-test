@@ -76,5 +76,11 @@
     "email": "Not Found",
     "file": "resumes/1769513635_Tejas Resume MF .pdf",
     "uploaded_at": "2026-01-27T17:03:55.555869"
+  },
+  {
+    "name": "Alex Johnson",
+    "email": "alex.johnson@email.com",
+    "file": "resumes/1769578766_frontend_developer_resume.pdf",
+    "uploaded_at": "2026-01-28T11:09:26.293300"
   }
 ]

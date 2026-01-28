@@ -8,6 +8,8 @@ from docx import Document
 import subprocess
 
 INCOMING = r"C:\Resumes\Incoming"
+PROCESSED = r"C:\Resumes\Processed"
+
 REPO_ROOT = r"C:\resume-database-test"
 RESUME_DIR = os.path.join(REPO_ROOT, "resumes")
 DATA_FILE = os.path.join(REPO_ROOT, "data", "resumes.json")
@@ -37,6 +39,8 @@ def extract_email(text):
 with open(DATA_FILE, "r", encoding="utf-8") as f:
     db = json.load(f)
 
+uploaded = 0
+
 for file in os.listdir(INCOMING):
     if not file.lower().endswith((".pdf", ".docx")):
         continue
@@ -50,6 +54,7 @@ for file in os.listdir(INCOMING):
 
     new_name = f"{int(datetime.now().timestamp())}_{file}"
     dst = os.path.join(RESUME_DIR, new_name)
+
     shutil.copy(src, dst)
 
     db.append({
@@ -59,13 +64,17 @@ for file in os.listdir(INCOMING):
         "uploaded_at": datetime.now().isoformat()
     })
 
-# Save DB
-with open(DATA_FILE, "w", encoding="utf-8") as f:
-    json.dump(db, f, indent=2)
+    # Move file after success
+    shutil.move(src, os.path.join(PROCESSED, file))
+    uploaded += 1
 
-# Git commit & push
-subprocess.run(["git", "add", "."], cwd=REPO_ROOT)
-subprocess.run(["git", "commit", "-m", "Added new resumes"], cwd=REPO_ROOT)
-subprocess.run(["git", "push"], cwd=REPO_ROOT)
+if uploaded > 0:
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(db, f, indent=2)
 
-print("✔ Uploaded to GitHub")
+    subprocess.run(["git", "pull"], cwd=REPO_ROOT)
+    subprocess.run(["git", "add", "."], cwd=REPO_ROOT)
+    subprocess.run(["git", "commit", "-m", f"Added {uploaded} new resumes"], cwd=REPO_ROOT)
+    subprocess.run(["git", "push"], cwd=REPO_ROOT)
+
+print(f"✔ {uploaded} resume(s) uploaded")
