@@ -12,10 +12,15 @@ body {
 h2 {
   margin-bottom: 10px;
 }
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
 input, select {
   padding: 6px;
-  margin: 5px 0;
-  width: 300px;
+  width: 100%;
 }
 .card {
   border: 1px solid #ddd;
@@ -42,15 +47,18 @@ input, select {
 
 <h2>📄 Resume Database</h2>
 
-<!-- Search -->
-<input type="text" id="searchBox" placeholder="Search by name, email, skill">
+<!-- Filters -->
+<div class="filters">
+  <select id="roleFilter">
+    <option value="">All Roles</option>
+  </select>
 
-<br>
+  <input type="text" id="skillFilter" placeholder="Skill (e.g. React, SEO)">
 
-<!-- Role Filter -->
-<select id="roleFilter">
-  <option value="">All Roles</option>
-</select>
+  <input type="text" id="experienceFilter" placeholder="Experience (e.g. 3 years)">
+
+  <input type="text" id="qualificationFilter" placeholder="Qualification (e.g. B.Tech, MBA)">
+</div>
 
 <div id="results"></div>
 
@@ -109,26 +117,34 @@ function render(data) {
   });
 }
 
-document.getElementById('searchBox').addEventListener('input', filter);
-document.getElementById('roleFilter').addEventListener('change', filter);
-
-function filter() {
-  const search = document.getElementById('searchBox').value.toLowerCase();
-  const role = document.getElementById('roleFilter').value;
+function applyFilters() {
+  const role = document.getElementById('roleFilter').value.toLowerCase();
+  const skill = document.getElementById('skillFilter').value.toLowerCase();
+  const experience = document.getElementById('experienceFilter').value.toLowerCase();
+  const qualification = document.getElementById('qualificationFilter').value.toLowerCase();
 
   const filtered = resumes.filter(r => {
-    const matchesSearch =
-      r.name.toLowerCase().includes(search) ||
-      r.email.toLowerCase().includes(search) ||
-      r.skills.join(" ").toLowerCase().includes(search);
 
-    const matchesRole = role === "" || r.role === role;
+    // Match only filled fields
+    if (role && r.role.toLowerCase() !== role) return false;
 
-    return matchesSearch && matchesRole;
+    if (skill && !r.skills.join(" ").toLowerCase().includes(skill)) return false;
+
+    if (experience && !r.experience.toLowerCase().includes(experience)) return false;
+
+    if (qualification && !r.qualification.toLowerCase().includes(qualification)) return false;
+
+    return true;
   });
 
   render(filtered);
 }
+
+// Attach listeners
+document.getElementById('roleFilter').addEventListener('change', applyFilters);
+document.getElementById('skillFilter').addEventListener('input', applyFilters);
+document.getElementById('experienceFilter').addEventListener('input', applyFilters);
+document.getElementById('qualificationFilter').addEventListener('input', applyFilters);
 </script>
 
 </body>
