@@ -82,5 +82,93 @@
     "email": "alex.johnson@email.com",
     "file": "resumes/1769578766_frontend_developer_resume.pdf",
     "uploaded_at": "2026-01-28T11:09:26.293300"
+  },
+  {
+    "name": "RAHUL SHARMA",
+    "email": "rahul.sharma@email.com",
+    "role": "Backend Developer",
+    "skills": [
+      "django",
+      "javascript",
+      "node",
+      "mongodb",
+      "sql",
+      "ui",
+      "flask",
+      "python",
+      "aws",
+      "mysql",
+      "java",
+      "express",
+      "docker"
+    ],
+    "experience": "4 years",
+    "qualification": "B.TECH",
+    "file": "resumes/1769580993_backend_resume.pdf",
+    "uploaded_at": "2026-01-28T11:46:33.445010"
+  },
+  {
+    "name": "AMIT PATEL",
+    "email": "amit.patel@email.com",
+    "role": "Digital Marketing Executive",
+    "skills": [
+      "content marketing",
+      "social media",
+      "seo",
+      "facebook ads",
+      "campaign",
+      "google ads",
+      "sem",
+      "analytics"
+    ],
+    "experience": "3 years",
+    "qualification": "DEGREE",
+    "file": "resumes/1769580993_digital_marketing_resume.pdf",
+    "uploaded_at": "2026-01-28T11:46:33.464221"
+  },
+  {
+    "name": "ANANYA VERMA",
+    "email": "ananya.verma@email.com",
+    "role": "Full Stack Developer",
+    "skills": [
+      "javascript",
+      "django",
+      "node",
+      "mongodb",
+      "react",
+      "html",
+      "sql",
+      "ui",
+      "aws",
+      "mysql",
+      "java",
+      "express",
+      "docker",
+      "css"
+    ],
+    "experience": "5 years",
+    "qualification": "B.E",
+    "file": "resumes/1769580993_fullstack_resume.pdf",
+    "uploaded_at": "2026-01-28T11:46:33.484624"
+  },
+  {
+    "name": "PRIYA MEHTA",
+    "email": "priya.mehta@email.com",
+    "role": "HR / Recruiter",
+    "skills": [
+      "ui",
+      "operations",
+      "payroll",
+      "recruitment",
+      "talent acquisition",
+      "employee engagement",
+      "hr",
+      "coordination",
+      "onboarding"
+    ],
+    "experience": "4 years",
+    "qualification": "MBA",
+    "file": "resumes/1769580993_hr_resume.pdf",
+    "uploaded_at": "2026-01-28T11:46:33.504696"
   }
 ]
