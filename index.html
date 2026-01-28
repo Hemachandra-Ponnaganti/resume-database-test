@@ -118,27 +118,38 @@ function render(data) {
 }
 
 function applyFilters() {
-  const role = document.getElementById('roleFilter').value.toLowerCase();
-  const skill = document.getElementById('skillFilter').value.toLowerCase();
-  const experience = document.getElementById('experienceFilter').value.toLowerCase();
-  const qualification = document.getElementById('qualificationFilter').value.toLowerCase();
+  const role = document.getElementById('roleFilter').value.trim().toLowerCase();
+  const skill = document.getElementById('skillFilter').value.trim().toLowerCase();
+  const experience = document.getElementById('experienceFilter').value.trim().toLowerCase();
+  const qualification = document.getElementById('qualificationFilter').value.trim().toLowerCase();
+
+  // If nothing entered → show all
+  if (!role && !skill && !experience && !qualification) {
+    render(resumes);
+    return;
+  }
 
   const filtered = resumes.filter(r => {
+    let matched = false;
 
-    // Match only filled fields
-    if (role && r.role.toLowerCase() !== role) return false;
+    const rRole = (r.role || "").toLowerCase();
+    const rSkills = Array.isArray(r.skills)
+      ? r.skills.join(" ").toLowerCase()
+      : "";
+    const rExp = (r.experience || "").toLowerCase();
+    const rQual = (r.qualification || "").toLowerCase();
 
-    if (skill && !r.skills.join(" ").toLowerCase().includes(skill)) return false;
+    if (role && rRole.includes(role)) matched = true;
+    if (skill && rSkills.includes(skill)) matched = true;
+    if (experience && rExp.includes(experience)) matched = true;
+    if (qualification && rQual.includes(qualification)) matched = true;
 
-    if (experience && !r.experience.toLowerCase().includes(experience)) return false;
-
-    if (qualification && !r.qualification.toLowerCase().includes(qualification)) return false;
-
-    return true;
+    return matched;
   });
 
   render(filtered);
 }
+
 
 // Attach listeners
 document.getElementById('roleFilter').addEventListener('change', applyFilters);
