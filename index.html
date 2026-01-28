@@ -123,15 +123,7 @@ function applyFilters() {
   const experience = document.getElementById('experienceFilter').value.trim().toLowerCase();
   const qualification = document.getElementById('qualificationFilter').value.trim().toLowerCase();
 
-  // If nothing entered → show all
-  if (!role && !skill && !experience && !qualification) {
-    render(resumes);
-    return;
-  }
-
   const filtered = resumes.filter(r => {
-    let matched = false;
-
     const rRole = (r.role || "").toLowerCase();
     const rSkills = Array.isArray(r.skills)
       ? r.skills.join(" ").toLowerCase()
@@ -139,16 +131,18 @@ function applyFilters() {
     const rExp = (r.experience || "").toLowerCase();
     const rQual = (r.qualification || "").toLowerCase();
 
-    if (role && rRole.includes(role)) matched = true;
-    if (skill && rSkills.includes(skill)) matched = true;
-    if (experience && rExp.includes(experience)) matched = true;
-    if (qualification && rQual.includes(qualification)) matched = true;
+    // AND logic: every filled field must match
+    if (role && !rRole.includes(role)) return false;
+    if (skill && !rSkills.includes(skill)) return false;
+    if (experience && !rExp.includes(experience)) return false;
+    if (qualification && !rQual.includes(qualification)) return false;
 
-    return matched;
+    return true;
   });
 
   render(filtered);
 }
+
 
 
 // Attach listeners
